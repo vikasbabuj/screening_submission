@@ -1,0 +1,30 @@
+module dtype  (clk, nclr, npre, d,q, nq);
+
+input d, clk, nclr, npre ; 
+output q, nq;
+
+reg q;
+reg nq;
+
+/* whenever the negative edge of clk, or negative edge of n_clr occurs
+then run code within always block
+*/
+always @ ( negedge clk or negedge nclr or negedge npre) 
+begin
+if (!nclr)  // Reset q = 0,  nq = 1 whenever the reset signal goes low, regardless of the clock
+	begin 
+	q <= 1'b0; // assign q  = logic-0. 
+	nq <= 1'b1; // assign nq  = logic-1. 
+	end 
+else if (!npre)  // Reset q = 0,  nq = 1 whenever the reset signal goes low, regardless of the clock
+	begin 
+	q <= 1'b1; // assign q  = logic-0. 
+	nq <= 1'b0; // assign nq  = logic-1. 
+	end 	
+else // If not resetting, update the register output on the clock's rising edge
+	begin
+	q <= d; 		// assign q = d. 
+	nq <= ~d;	// assign nq = (not) d
+	end
+end
+endmodule 

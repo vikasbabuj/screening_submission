@@ -1,0 +1,29 @@
+// Code your design here
+`include "ripple_counter_up_6bit.v"
+`include "ripple_counter_up_4bit.v"
+`include "ring_counter_4bit.v"
+`include "adder_4bit.v"
+`include "dtype.v"
+`include "full_adder.v"
+
+module pwm_test (sys_clk, sys_nclr, clk_div_tap, pwm_clk_tap, pwm);
+  
+input sys_clk, sys_nclr;
+output [5:0]q;
+output clk_div_tap, pwm_clk_tap, pwm;
+  
+
+wire [5:0] clk_div; 
+wire [3:0] pwm_clk;  
+wire [3:0] pwm_count;
+  
+ripple_counter_up_6bit u1   (.sys_clk (sys_clk),      .sys_nclr(sys_nclr), .q(clk_div));
+ring_counter_4bit      u2   (.sys_clk (clk_div_tap),   .sys_nclr(sys_nclr), .q(pwm_clk));
+ripple_counter_up_4bit u3   (.sys_clk  (pwm_clk_tap), .sys_nclr(sys_nclr), .q(pwm_count));
+adder_4bit u4 			    (.a(4'b1100),  .b(pwm_count), .cin(1'b0), .cout(pwm)); 
+  
+assign clk_div_tap = clk_div[4];  
+assign pwm_clk_tap =  pwm_clk[0];
+
+  
+endmodule

@@ -1,0 +1,15 @@
+// Code your design here
+`include "dtype.v"  // comment out if not  top-level design
+
+module johnson_counter_4bit (sys_clk, sys_nclr, q);
+  
+input sys_clk, sys_nclr;
+  output [3:0]q;
+ wire r1;
+  
+  dtype u1a (.clk (sys_clk), .nclr(sys_nclr), .npre(1'b1),      .d(r1),   .q(q[0]), .nq());
+  dtype u2b (.clk (sys_clk), .nclr(sys_nclr), .npre(1'b1),      .d(q[0]), .q(q[1]), .nq()); 
+  dtype u3a (.clk (sys_clk), .nclr(sys_nclr), .npre(1'b1),      .d(q[1]), .q(q[2]), .nq()); 
+  dtype u2a (.clk (sys_clk), .nclr(sys_nclr), .npre(1'b1),      .d(q[2]), .q(q[3]), .nq(r1)); 
+
+endmodule

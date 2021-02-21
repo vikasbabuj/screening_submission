@@ -1,0 +1,14 @@
+// Code your design here
+module full_adder (a, b, cin, sum, cout);
+  
+input a, b, cin;
+output sum, cout;
+  
+wire r1, r2, r3;
+  xor u3A (r1, a,b);  // output written first
+  xor u3B (sum,r1,cin);
+  and U1A (r2,cin,r1);
+  and U1B (r3,a, b);
+  or  U2A (cout,r2,r3); 
+  
+endmodule
